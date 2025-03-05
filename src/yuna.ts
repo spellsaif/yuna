@@ -101,16 +101,54 @@ export class Yuna {
             res,
             params: {},
             state: {},
+            replied: false
         };
+
+
+        //Attach reply method to context
+        ctx.reply = (data: string | object, options?: {contextType?:string, statusCode?: number}) => {
+            
+            if (ctx.replied) return;
+            ctx.replied = true; // mark as replied
+
+            //set status code
+            if(options?.statusCode) {
+                res.statusCode = options.statusCode;
+            }
+
+            // check type of the data
+            if (typeof data === 'object') {
+                // if object then stringify it
+                res.setHeader('Content-Type', options?.contextType || 'application/json');
+                res.end(JSON.stringify(data));
+            } else {
+
+                // otherwise, send it as text
+                res.setHeader('Content-Type', options?.contextType || 'text/plain');
+                res.end(data);
+            }
+
+        }
 
             // run middleware function one by one
         let index = 0;
         const runMiddleware = () => {
+            // Stop processing if the response has already been sent.
+            if (ctx.replied) return;
             if(index < this.middlewares.length) {
-                this.middlewares[index++](ctx, runMiddleware);
+                try {
+                    this.middlewares[index++](ctx, runMiddleware);
+                } catch(err) {
+                    console.error("Middleware Error:", err);
+                    if (!ctx.replied) {
+                        ctx.reply!("Internal Server Error", {statusCode: 500});
+                    }
+                }
             } else {
                 //Once all middleware functions are executed, we will handle the route
-                this.handleRoute(ctx);
+                if(!ctx.replied) {
+                    this.handleRoute(ctx);
+                }
             }
         }
 
