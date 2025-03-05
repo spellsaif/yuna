@@ -9,7 +9,7 @@ app.wield(log);
 
 
 app.get("/", (ctx:Context) => {
-    ctx.reply!({
+    ctx.reply({
         message: "Hello, Yuna!"
     });
 
