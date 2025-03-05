@@ -20,6 +20,9 @@ export interface Context {
     body?: any;
     state?: Record<string, any>;
 
+    // flag to check if response is sent already
+    replied?: boolean;
+
     // reply method which sends plain string or object and sets content type and status code to json if not provided
     reply?: (data: string | object, options?: { contentType?: string, statusCode?: number}) => void;
 }
