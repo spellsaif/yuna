@@ -48,6 +48,31 @@ export class Yuna {
     }
 
 
+        /**
+     * Register DELETE Route
+     */
+
+        delete(path: string, handler: RouteHandler) {
+            this.addRoute(MethodType.DELETE, path, handler);
+      }
+
+          /**
+     * Register PUT Route
+     */
+
+    put(path: string, handler: RouteHandler) {
+        this.addRoute(MethodType.POST, path, handler);
+  }
+
+      /**
+     * Register PATCH Route
+     */
+
+      patch(path: string, handler: RouteHandler) {
+        this.addRoute(MethodType.POST, path, handler);
+  }
+
+
     /**
      * Helper method to add route
      */
