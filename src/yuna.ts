@@ -5,6 +5,7 @@
 import http from "http";
 import { Context, Middleware, RouteHandler } from "./types";
 import { assembleRouter } from "./router";
+import { MethodType } from "./enums";
 
 /**
  * Route type holds method, path, handler and compiled regex for the dynamic route.
@@ -35,7 +36,7 @@ export class Yuna {
      */
 
     get(path: string, handler: RouteHandler) {
-        this.addRoute('GET', path, handler)
+        this.addRoute(MethodType.GET, path, handler)
     }
 
     /**
@@ -43,7 +44,7 @@ export class Yuna {
      */
 
     post(path: string, handler: RouteHandler) {
-          this.addRoute('GET', path, handler);
+          this.addRoute(MethodType.POST, path, handler);
     }
 
 
