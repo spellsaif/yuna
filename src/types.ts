@@ -24,7 +24,7 @@ export interface Context {
     replied?: boolean;
 
     // reply method which sends plain string or object and sets content type and status code to json if not provided
-    reply?: (data: string | object, options?: { contentType?: string, statusCode?: number}) => void;
+    reply: (data: string | object, options?: { contentType?: string, statusCode?: number}) => void;
 }
 
 export type Next = () => void;
