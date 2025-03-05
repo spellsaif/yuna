@@ -4,10 +4,15 @@ import createYuna from "./yuna";
 
 const app = createYuna();
 
+//middlewares
 app.wield(log);
 
+
 app.get("/", (ctx:Context) => {
-    ctx.res.end("hello, yuna");
+    ctx.reply!({
+        message: "Hello, Yuna!"
+    });
+
 });
 
 app.serve(3000, () => {
