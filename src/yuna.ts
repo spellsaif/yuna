@@ -101,7 +101,8 @@ export class Yuna {
             res,
             params: {},
             state: {},
-            replied: false
+            replied: false,
+            reply: () => {} //tempory placeholder, will be replaced later
         };
 
 
