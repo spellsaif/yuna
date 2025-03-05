@@ -19,6 +19,9 @@ export interface Context {
     params?: Record<string, string>
     body?: any;
     state?: Record<string, any>;
+
+    // reply method which sends plain string or object and sets content type and status code to json if not provided
+    reply?: (data: string | object, options?: { contentType?: string, statusCode?: number}) => void;
 }
 
 export type Next = () => void;
