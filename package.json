@@ -1,15 +1,15 @@
 {
   "name": "yuna.js",
   "version": "0.1.0",
-  "main": "dist/yuna.js",
-  "types": "dist/yuna.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build"
   },
   "keywords": ["backend", "yuna.js", "typescript", "node", "backend library"],
   "author": "spellsaif",
-  "license": "ISC",
+  "license": "MIT",
   "type": "commonjs",
   "description": "A TypeScript library so light, even an isekai hero could carry it!",
   "devDependencies": {
