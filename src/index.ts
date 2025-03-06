@@ -5,8 +5,8 @@ import createYuna from "./yuna";
 const app = createYuna();
 
 //middlewares
-app.wield(nekoTrace);
-app.wield(kamiJson);
+app.summon(nekoTrace);
+app.summon(kamiJson);
 
 
 app.get("/", (ctx:Context) => {
