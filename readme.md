@@ -44,11 +44,24 @@ app.get("/hello", (ctx) => {
 // Define a POST endpoint that echoes back the received JSON data
 app.post("/data", (ctx) => {
   const data = ctx.body;
-  res.whisper({ received: data });
+  ctx.whisper({ received: data });
 });
 
 // Start the server on port 3000
 app.listen(3000, () => {
   console.log("Server is running on http://localhost:3000");
 });
+
+
+//Grouping Routes
+app.tribe("/auth", (auth) => {
+    auth.get("/login", (ctx) => {
+        ctx.whisper({ message: "Login page" });
+    })
+
+    auth.get("/register", (ctx) => {
+        ctx.whisper({ message: "Register page" });
+    })
+})
+
 ```
