@@ -5,7 +5,7 @@ import createYuna from "./yuna";
 const app = createYuna();
 
 //middlewares
-app.summon(nekoTrace);
+app.summon(nekoTrace());
 app.summon(kamiJson);
 
 
