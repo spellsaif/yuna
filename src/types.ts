@@ -21,10 +21,10 @@ export interface Context {
     state?: Record<string, any>;
 
     // flag to check if response is sent already
-    replied?: boolean;
+    whispered?: boolean;
 
-    // reply method which sends plain string or object and sets content type and status code to json if not provided
-    reply: (data: string | object, options?: { contentType?: string, statusCode?: number}) => void;
+    // whisper method which sends plain string or object and sets content type and status code to json if not provided
+    whisper: (data: string | object, options?: { contentType?: string, statusCode?: number}) => void;
 }
 
 export type Next = () => void;
