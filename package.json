@@ -1,15 +1,17 @@
 {
-  "name": "yuna",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "yuna.js",
+  "version": "0.1.0",
+  "main": "dist/yuna.js",
+  "types": "dist/yuna.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["backend", "yuna.js", "typescript", "node", "backend library"],
+  "author": "spellsaif",
   "license": "ISC",
   "type": "commonjs",
-  "description": "",
+  "description": "A TypeScript library so light, even an isekai hero could carry it!",
   "devDependencies": {
     "@types/node": "^22.13.9",
     "ts-node": "^10.9.2",
