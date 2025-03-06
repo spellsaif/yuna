@@ -117,7 +117,7 @@ export class Yuna {
      * Create unified method to handle all requests
      */
 
-    private handleRequest(req: http.IncomingMessage, res: http.ServerResponse) {
+    private async handleRequest(req: http.IncomingMessage, res: http.ServerResponse) {
 
         //Building context object
         const ctx: Context = {
@@ -157,12 +157,16 @@ export class Yuna {
 
             // run middleware function one by one
         let index = 0;
-        const runMiddleware = () => {
+        const runMiddleware = async() => {
             // Stop processing if the response has already been sent.
             if (ctx.whispered) return;
             if(index < this.middlewares.length) {
                 try {
-                    this.middlewares[index++](ctx, runMiddleware);
+
+                    const result: any = this.middlewares[index++](ctx, runMiddleware);
+                    if (result instanceof Promise) {
+                        await result;
+                    }
                 } catch(err) {
                     console.error("Middleware Error:", err);
                     if (!ctx.whispered) {
@@ -172,7 +176,7 @@ export class Yuna {
             } else {
                 //Once all middleware functions are executed, we will handle the route
                 if(!ctx.whispered) {
-                    this.handleRoute(ctx);
+                    await this.handleRoute(ctx);
                 }
             }
         }
