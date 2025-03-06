@@ -119,7 +119,7 @@ export default class Yuna {
 
     private async handleRequest(req: http.IncomingMessage, res: http.ServerResponse) {
 
-        const parsedUrl = new URL(req.url || `http://${req.headers.host}`);
+        const parsedUrl = new URL(req.url!, `http://${req.headers.host}`);
         const query: Record<string, string | string[]> = {};
         parsedUrl.searchParams.forEach((value, key) => {
             if (query[key]) {
