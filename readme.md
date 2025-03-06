@@ -33,6 +33,9 @@ const app = new Yuna();
 // Use NekoTrace middleware for logging.
 app.summon(nekoTrace());
 
+//Use kamiJson for parsing json from sent by client
+app.summon(kamiJson);
+
 // Define a simple GET endpoint
 app.get("/hello", (req: Request, res: Response) => {
   res.json({ message: "Hello, world!" });
