@@ -61,7 +61,7 @@ export class Yuna {
      */
 
     put(path: string, handler: RouteHandler) {
-        this.addRoute(MethodType.POST, path, handler);
+        this.addRoute(MethodType.PUT, path, handler);
   }
 
       /**
@@ -69,7 +69,7 @@ export class Yuna {
      */
 
       patch(path: string, handler: RouteHandler) {
-        this.addRoute(MethodType.POST, path, handler);
+        this.addRoute(MethodType.PATCH, path, handler);
   }
 
 
