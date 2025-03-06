@@ -27,7 +27,7 @@ export class Yuna {
     private routes: Route[] = [];
 
     //Register middleware that will run on every request
-    wield(middleware: Middleware) {
+    summon(middleware: Middleware) {
         this.middlewares.push(middleware);
     }
 
