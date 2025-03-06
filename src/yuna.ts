@@ -19,7 +19,7 @@ interface Route {
     keys: string[];
 }
 
-export class Yuna {
+export default class Yuna {
     // Array to store middleware functions
     private middlewares: Middleware[] = [];
     
@@ -226,6 +226,3 @@ export class Yuna {
 
 }
 
-export default function createYuna() {
-    return new Yuna();
-}
