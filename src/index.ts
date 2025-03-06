@@ -16,6 +16,12 @@ app.get("/", (ctx:Context) => {
 
 });
 
+app.tribe('/api', (api) => {
+    api.get('/users', (ctx) => ctx.whisper({ message: 'List of users' }));
+    api.post('/users', (ctx) => ctx.whisper({ message: 'User created' }));
+    api.get('/users/:id', (ctx) => ctx.whisper({ message: `User ID: ${ctx.params.id}` }));
+});
+
 app.get("/about/:name", (ctx: Context) => {
     const {name} = ctx.params;
     ctx.whisper(`<h1> Hi, ${name}</h1>`)
