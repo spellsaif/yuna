@@ -47,12 +47,6 @@ app.post("/data", (ctx) => {
   ctx.whisper({ received: data });
 });
 
-// Start the server on port 3000
-app.listen(3000, () => {
-  console.log("Server is running on http://localhost:3000");
-});
-
-
 //Grouping Routes
 app.tribe("/auth", (auth) => {
     auth.get("/login", (ctx) => {
@@ -63,5 +57,13 @@ app.tribe("/auth", (auth) => {
         ctx.whisper({ message: "Register page" });
     })
 })
+
+// Start the server on port 3000
+app.listen(3000, () => {
+  console.log("Server is running on http://localhost:3000");
+});
+
+
+
 
 ```
