@@ -79,22 +79,21 @@ export class Yuna {
    */
 
     tribe(prefix:string, callback: (router: Yuna) => void) {
-        const subRouter = new Yuna();
-        
+        const basePath = prefix.endsWith("/") ? prefix.slice(0, -1) : prefix;
+
+        // Create a proxy object that extends the current instance (`this`)
+        const subRouter = Object.create(this);
+
+        // Override the route methods to prepend the basePath
+        subRouter.get = (path: string, handler: RouteHandler) => this.get(`${basePath}${path}`, handler);
+        subRouter.post = (path: string, handler: RouteHandler) => this.post(`${basePath}${path}`, handler);
+        subRouter.put = (path: string, handler: RouteHandler) => this.put(`${basePath}${path}`, handler);
+        subRouter.delete = (path: string, handler: RouteHandler) => this.delete(`${basePath}${path}`, handler);
+        subRouter.patch = (path: string, handler: RouteHandler) => this.patch(`${basePath}${path}`, handler);
+
+        // Pass the modified instance to the callback
         callback(subRouter);
 
-        for (const route of subRouter.routes) {
-            const {regex, keys} = assembleRouter(prefix+ route.path);
-            this.routes.push({
-                method: route.method,
-                path: prefix + route.path,
-                handler: route.handler,
-                keys,
-                regex
-            });
-        }
-
-        
     }   
 
 
