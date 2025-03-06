@@ -1,13 +1,19 @@
 {
   "name": "yuna.js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build"
   },
-  "keywords": ["backend", "yuna.js", "typescript", "node", "backend library"],
+  "keywords": [
+    "backend",
+    "yuna.js",
+    "typescript",
+    "node",
+    "backend library"
+  ],
   "author": "spellsaif",
   "license": "MIT",
   "type": "commonjs",
