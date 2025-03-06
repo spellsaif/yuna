@@ -73,6 +73,31 @@ export class Yuna {
   }
 
 
+  /**
+   * Route Grouping.
+   * it helps to organize routes for specific endpoints
+   */
+
+    tribe(prefix:string, callback: (router: Yuna) => void) {
+        const subRouter = new Yuna();
+        
+        callback(subRouter);
+
+        for (const route of subRouter.routes) {
+            const {regex, keys} = assembleRouter(prefix+ route.path);
+            this.routes.push({
+                method: route.method,
+                path: prefix + route.path,
+                handler: route.handler,
+                keys,
+                regex
+            });
+        }
+
+        
+    }   
+
+
     /**
      * Helper method to add route
      */
