@@ -24,12 +24,11 @@ In this guide, we'll set up a basic API with two endpoints:
 ## Example
 
 ```ts import { createApp, Middleware } from "yuna-framework"; // Import the framework
-import { nekoTrace, kamiJson } from "yuna-framework/middleware";    // Import the nekoTrace, kamiJson middlewares
-import { createYuna } from "yuna.js";
-import {Context} from "yuna.js/types";
+import { Yuna } from "yuna.js";
+import { nekoTrace, kamiJson } from "yuna.js/middlewares";    // Import the nekoTrace, kamiJson middlewares
 
 // Create an instance of the app
-const app = createYuna();
+const app = new Yuna();
 
 // Use NekoTrace middleware for logging.
 app.summon(nekoTrace());
