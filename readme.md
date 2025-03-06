@@ -23,11 +23,11 @@ In this guide, we'll set up a basic API with two endpoints:
 
 ## Example
 
-```ts import { createApp, Middleware } from "yuna-framework"; // Import the framework
+```ts
 import { Yuna } from "yuna.js";
-import { nekoTrace, kamiJson } from "yuna.js/middlewares";    // Import the nekoTrace, kamiJson middlewares
+import { nekoTrace, kamiJson } from "yuna.js";    // Import the nekoTrace, kamiJson middlewares
 
-// Create an instance of the app
+// Create an instance of the Yuna()
 const app = new Yuna();
 
 // Use NekoTrace middleware for logging.
@@ -37,14 +37,14 @@ app.summon(nekoTrace());
 app.summon(kamiJson);
 
 // Define a simple GET endpoint
-app.get("/hello", (req: Request, res: Response) => {
-  res.json({ message: "Hello, world!" });
+app.get("/hello", (ctx) => {
+  ctx.whisper({ message: "Hello, Yuna!" });
 });
 
 // Define a POST endpoint that echoes back the received JSON data
-app.post("/data", (req: Request, res: Response) => {
-  const data = req.body;
-  res.json({ received: data });
+app.post("/data", (ctx) => {
+  const data = ctx.body;
+  res.whisper({ received: data });
 });
 
 // Start the server on port 3000
