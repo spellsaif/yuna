@@ -10,7 +10,7 @@ app.summon(kamiJson);
 
 
 app.get("/", (ctx:Context) => {
-    ctx.reply({
+    ctx.whisper({
         message: "Hello, Yuna!"
     });
 
@@ -18,12 +18,12 @@ app.get("/", (ctx:Context) => {
 
 app.get("/about/:name", (ctx: Context) => {
     const {name} = ctx.params;
-    ctx.reply(`<h1> Hi, ${name}</h1>`)
+    ctx.whisper(`<h1> Hi, ${name}</h1>`)
 })
 
 app.post("/login", (ctx: Context) => {
     console.log(ctx.body);
-    ctx.reply("object received");
+    ctx.whisper("object received");
 })
 
 app.serve(3000, () => {
