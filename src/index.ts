@@ -1,11 +1,11 @@
-import { kamiJson, log } from "./middleware";
+import { kamiJson, nekoTrace } from "./middleware";
 import { Context } from "./types";
 import createYuna from "./yuna";
 
 const app = createYuna();
 
 //middlewares
-app.wield(log);
+app.wield(nekoTrace);
 app.wield(kamiJson);
 
 
