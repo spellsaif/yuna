@@ -5,8 +5,8 @@ import { Middleware } from "./types";
  * Middleware to log the request method and url
 */
 
-export const log: Middleware = (ctx, next) => {
-    console.log(`${ctx.req.method} ${ctx.req.url}`);
+export const nekoTrace: Middleware = (ctx, next) => {
+    console.log(`Method:${ctx.req.method}  Url: ${ctx.req.url}`);
     next();
 }
 
