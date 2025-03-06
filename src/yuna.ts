@@ -119,12 +119,23 @@ export default class Yuna {
 
     private async handleRequest(req: http.IncomingMessage, res: http.ServerResponse) {
 
+        const parsedUrl = new URL(req.url! || `http://${req.headers.host}`);
+        const query: Record<string, string | string[]> = {};
+        parsedUrl.searchParams.forEach((value, key) => {
+            if (query[key]) {
+                query[key] = Array.isArray(query[key]) ? [...query[key], value] : [query[key] as string, value];
+            } else {
+                query[key] = value;
+            }
+         });
+
         //Building context object
         const ctx: Context = {
             req,
             res,
             params: {},
             state: {},
+            query,
             whispered: false,
             whisper: () => {} //tempory placeholder, will be replaced later
         };
