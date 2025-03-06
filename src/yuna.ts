@@ -101,16 +101,16 @@ export class Yuna {
             res,
             params: {},
             state: {},
-            replied: false,
-            reply: () => {} //tempory placeholder, will be replaced later
+            whispered: false,
+            whisper: () => {} //tempory placeholder, will be replaced later
         };
 
 
-        //Attach reply method to context
-        ctx.reply = (data: string | object, options?: {contextType?:string, statusCode?: number}) => {
+        //Attach whisper method to context
+        ctx.whisper = (data: string | object, options?: {contextType?:string, statusCode?: number}) => {
             
-            if (ctx.replied) return;
-            ctx.replied = true; // mark as replied
+            if (ctx.whispered) return;
+            ctx.whispered = true; // mark as whispered
 
             //set status code
             if(options?.statusCode) {
@@ -135,19 +135,19 @@ export class Yuna {
         let index = 0;
         const runMiddleware = () => {
             // Stop processing if the response has already been sent.
-            if (ctx.replied) return;
+            if (ctx.whispered) return;
             if(index < this.middlewares.length) {
                 try {
                     this.middlewares[index++](ctx, runMiddleware);
                 } catch(err) {
                     console.error("Middleware Error:", err);
-                    if (!ctx.replied) {
-                        ctx.reply!("Internal Server Error", {statusCode: 500});
+                    if (!ctx.whispered) {
+                        ctx.whisper!("Internal Server Error", {statusCode: 500});
                     }
                 }
             } else {
                 //Once all middleware functions are executed, we will handle the route
-                if(!ctx.replied) {
+                if(!ctx.whispered) {
                     this.handleRoute(ctx);
                 }
             }
