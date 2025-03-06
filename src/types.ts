@@ -16,7 +16,8 @@ import {IncomingMessage, ServerResponse} from "http";
 export interface Context {
     req: IncomingMessage;
     res: ServerResponse;
-    params: Record<string, string>
+    params: Record<string, string>;
+    query: Record<string, string | string[]>; 
     body?: any;
     state?: Record<string, any>;
 
