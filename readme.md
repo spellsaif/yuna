@@ -1,19 +1,52 @@
-# yuna.js
+# Building a Simple Backend REST API with Yuna.js
 
-yuna.js is a lightweight, Express-like web framework built with Node.js and TypeScript. It features a unified context for handling HTTP requests/responses, a flexible middleware (or plugin) system using `wield` to register middleware, dynamic routing with automatic parameter and query parsing, and a convenient `reply` method for sending responses.
+Welcome to this guide on how to build a simple REST API using **Yuna.js**—a lightweight, middleware-based framework. In this tutorial, you'll learn how to create your backend API, integrate the anime-inspired **NekoTrace** middleware for stylish logging, and test your endpoints.
 
-## Features
+---
 
-- **Unified Context:** Every request comes with a `ctx` object that bundles the HTTP request, response, route parameters (`ctx.params`), query parameters (`ctx.query`), request body (`ctx.body`), and custom state (`ctx.state`).
-- **Middleware & Plugin System:** Extend your app with middleware or plugins. Register middleware using the `wield` method.
-- **Dynamic Routing:** Define routes with dynamic parameters (e.g. `/about/:name`) that are automatically parsed into `ctx.params`.
-- **Query Parsing:** Automatic parsing of URL query strings into `ctx.query` using the WHATWG URL API.
-- **Reply Method:** Use `ctx.reply` to easily send plain text or JSON responses with proper header management.
-- **TypeScript-Powered:** Fully typed for early error detection and improved development experience.
+## Table of Contents
 
-## Installation
+1. [Introduction](#introduction)
+2. [Example](#example)
 
-You can install yuna.js via npm:
+---
 
-```bash
-npm install yuna.js
+## Introduction
+
+Yuna.js is designed to be simple yet powerful by using middleware to handle HTTP requests. One of its strengths is the ability to plug in custom middleware such as **NekoTrace**, which logs requests and responses in a fun, anime-inspired way using colors and emojis.
+
+In this guide, we'll set up a basic API with two endpoints:
+- **GET** `/hello` — returns a greeting message.
+- **POST** `/data` — accepts JSON data and echoes it back.
+
+---
+
+## Example
+
+```ts import { createApp, Middleware } from "yuna-framework"; // Import the framework
+import { nekoTrace, kamiJson } from "yuna-framework/middleware";    // Import the nekoTrace, kamiJson middlewares
+import { createYuna } from "yuna.js";
+import {Context} from "yuna.js/types";
+
+// Create an instance of the app
+const app = createYuna();
+
+// Use NekoTrace middleware for logging.
+app.summon(nekoTrace());
+
+// Define a simple GET endpoint
+app.get("/hello", (req: Request, res: Response) => {
+  res.json({ message: "Hello, world!" });
+});
+
+// Define a POST endpoint that echoes back the received JSON data
+app.post("/data", (req: Request, res: Response) => {
+  const data = req.body;
+  res.json({ received: data });
+});
+
+// Start the server on port 3000
+app.listen(3000, () => {
+  console.log("Server is running on http://localhost:3000");
+});
+```
