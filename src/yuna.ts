@@ -6,6 +6,7 @@ import http from "http";
 import { Context, Middleware, RouteHandler } from "./types";
 import { assembleRouter } from "./router";
 import { MethodType } from "./enums";
+import { RadixTree } from "./helpers";
 
 /**
  * Route type holds method, path, handler and compiled regex for the dynamic route.
@@ -23,8 +24,8 @@ export default class Yuna {
     // Array to store middleware functions
     private middlewares: Middleware[] = [];
     
-    //Array to store routes definitions
-    private routes: Route[] = [];
+    //Radix Tree to store routes
+    private routes = new RadixTree();
 
     //Register middleware that will run on every request
     summon(middleware: Middleware) {
@@ -104,13 +105,11 @@ export default class Yuna {
     private addRoute(method: string, path: string, handler: RouteHandler) {
         const {regex, keys} = assembleRouter(path);
 
-        this.routes.push({
+        this.routes.insert(
             method,
             path,
-            handler,
-            regex,
-            keys
-        });
+            handler
+        );
     }
 
     /**
@@ -206,24 +205,17 @@ export default class Yuna {
         const method = ctx.req.method || '';
         const url = ctx.req.url || '';
 
-        for(const route of this.routes) {
-            if(route.method === method) {
-                const match = route.regex.exec(url);
-                if(match) {
-                    //Map each captured group to its paramter name
-                    route.keys.forEach((key, index) => {
-                        ctx.params![key] = match[index + 1];
-                    })
+        const {hanlder, params} = this.routes.match(method, url);
 
-                    //call the route hanlder passing the context
-                    return route.handler(ctx);
-                }
-            }
+        if(hanlder) {
+            ctx.params = params;
+            return hanlder(ctx);
         }
 
-        // if route is not found then return 404
-        ctx.res.statusCode = 404;
-        ctx.res.end('404 - Not Found');
+        ctx.res.statusCode = 400;
+        ctx.res.end("404 - Not Found");
+
+
     }
 
     /**
