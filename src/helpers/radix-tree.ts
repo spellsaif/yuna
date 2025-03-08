@@ -44,12 +44,15 @@ import { RouteHandler } from "../types";
                 node = node.children.get(part)!;
             } else {
                 // Match dynamic segment (":name")
-                let dynamicNode: RadixTreeNode | undefined;
+                let dynamicNode: RadixNode | undefined;
                 for (const [key, child] of node.children.entries()) {
                     if (key.startsWith(":")) {  // Dynamic param found
                         dynamicNode = child;
-                        const paramKey = key.slice(1); // Remove `:` to get "name"
-                        params[paramKey] = part; // Store correctly as { name: 'saif' }
+                        
+                        if (key.length > 1) { // Ensure key isn't empty
+                            const paramKey = key.slice(1); // Remove `:` to get "name"
+                            params[paramKey] = part; // Store correctly as { name: 'saif' }
+                        }
                         break;
                     }
                 }
@@ -60,5 +63,6 @@ import { RouteHandler } from "../types";
     
         return { handler: node.handlers[method], params }; // Ensure correct params
     }
+    
     
  }
