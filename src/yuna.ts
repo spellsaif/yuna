@@ -205,11 +205,11 @@ export default class Yuna {
         const method = ctx.req.method || '';
         const url = ctx.req.url || '';
 
-        const {hanlder, params} = this.routes.match(method, url);
+        const {handler, params} = this.routes.match(method, url);
 
-        if(hanlder) {
+        if(handler) {
             ctx.params = params;
-            return hanlder(ctx);
+            return handler(ctx);
         }
 
         ctx.res.statusCode = 400;
