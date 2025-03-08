@@ -4,7 +4,6 @@
 
 import http from "http";
 import { Context, Middleware, RouteHandler } from "./types";
-import { assembleRouter } from "./router";
 import { MethodType } from "./enums";
 import { RadixTree } from "./helpers";
 
