@@ -38,23 +38,23 @@ app.summon(kamiJson);
 
 // Define a simple GET endpoint
 app.get("/hello", (ctx) => {
-  ctx.whisper({ message: "Hello, Yuna!" });
+  ctx.messageBack({ message: "Hello, Yuna!" });
 });
 
 // Define a POST endpoint that echoes back the received JSON data
 app.post("/data", (ctx) => {
   const data = ctx.body;
-  ctx.whisper({ received: data });
+  ctx.messageBack({ received: data });
 });
 
 //Grouping Routes
 app.tribe("/auth", (auth) => {
     auth.get("/login", (ctx) => {
-        ctx.whisper({ message: "Login page" });
+        ctx.messageBack({ message: "Login page" });
     })
 
     auth.get("/register", (ctx) => {
-        ctx.whisper({ message: "Register page" });
+        ctx.messageBack({ message: "Register page" });
     })
 })
 
