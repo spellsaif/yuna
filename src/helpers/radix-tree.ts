@@ -34,7 +34,7 @@ import { RouteHandler } from "../types";
         node.handlers[method] = handler;
     }
 
-    match(method: string, path: string): {hanlder?: RouteHandler, params: Record<string, string>} {
+    match(method: string, path: string): {handler?: RouteHandler, params: Record<string, string>} {
         let node = this.root;
         const params: Record<string, string> = {};
         const parts = path.split("/").filter(Boolean);
@@ -42,14 +42,17 @@ import { RouteHandler } from "../types";
         for (const part of parts) {
             if(node.children.has(part)) {
                 node = node.children.get(part)!;
+
             }else if (node.children.has(":")) {
-                node = node.children.get(":")!;
-                params[node.paramKey!] = part;
+                const paramNode = node.children.get(':')!;
+                params[paramNode.paramKey!] = part; // Assign parameter correctly
+                node = paramNode;
+
             } else {
-                return {hanlder: undefined, params: {}};
+                return {handler: undefined, params: {}};
             }
         }
 
-        return {hanlder: node.handlers[method], params};
+        return {handler: node.handlers[method], params};
     }
  }
