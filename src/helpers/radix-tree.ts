@@ -44,7 +44,7 @@ import { RouteHandler } from "../types";
                 node = node.children.get(part)!;
             } else {
                 // Match dynamic segment (":name")
-                let dynamicNode: RadixNode | undefined;
+                let dynamicNode: RadixTreeNode | undefined;
                 for (const [key, child] of node.children.entries()) {
                     if (key.startsWith(":")) {  // Dynamic param found
                         dynamicNode = child;
