@@ -12,14 +12,6 @@ import { RadixTree } from "./helpers";
  * Route type holds method, path, handler and compiled regex for the dynamic route.
  */
 
-interface Route {
-    method: string;
-    path: string;
-    handler: RouteHandler;
-    regex: RegExp;
-    keys: string[];
-}
-
 export default class Yuna {
     // Array to store middleware functions
     private middlewares: Middleware[] = [];
@@ -103,7 +95,6 @@ export default class Yuna {
      */
 
     private addRoute(method: string, path: string, handler: RouteHandler) {
-        const {regex, keys} = assembleRouter(path);
 
         this.routes.insert(
             method,
