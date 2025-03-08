@@ -1,7 +1,7 @@
 import http from "http";
 import { Context, Middleware, RouteHandler } from "./types";
 import { MethodType } from "./enums";
-import { RadixTree } from "./helpers";
+import { createContext, RadixTree } from "./helpers";
 
 /**
  * Yuna is the core class for creating the app.
@@ -105,47 +105,7 @@ export default class Yuna {
     });
     return query;
   }
-
-  /**
-   * Create a context for the request.
-   * @param req - Incoming HTTP request.
-   * @param res - HTTP response.
-   * @param query - Parsed query object.
-   * @returns A context object.
-   */
-  private createContext(
-    req: http.IncomingMessage,
-    res: http.ServerResponse,
-    query: Record<string, string | string[]>
-  ): Context {
-    const ctx: Context = {
-      req,
-      res,
-      params: {},
-      state: {},
-      query,
-      whispered: false,
-      whisper: () => {} // temporary placeholder
-    };
-
-    // Attach a custom "whisper" method to handle responses.
-    ctx.whisper = (data: string | object, options?: { contextType?: string; statusCode?: number }): void => {
-      if (ctx.whispered) return;
-      ctx.whispered = true;
-      if (options?.statusCode) {
-        res.statusCode = options.statusCode;
-      }
-      if (typeof data === 'object') {
-        res.setHeader('Content-Type', options?.contextType || 'application/json');
-        res.end(JSON.stringify(data));
-      } else {
-        res.setHeader('Content-Type', options?.contextType || 'text/plain');
-        res.end(data);
-      }
-    };
-
-    return ctx;
-  }
+ 
 
   /**
    * Handles an incoming HTTP request.
@@ -158,10 +118,10 @@ export default class Yuna {
     const parsedUrl = new URL(req.url!, `http://${req.headers.host}`);
     const query = this.buildQuery(parsedUrl);
     // Create the context object.
-    const ctx = this.createContext(req, res, query);
+    const ctx = createContext(req, res);
     // Execute middleware chain and finally handle the route.
     await this.runMiddlewares(ctx, async () => {
-      if (!ctx.whispered) {
+      if (!ctx.res.writableEnded) {
         await this.handleRoute(ctx);
       }
     });
@@ -175,15 +135,15 @@ export default class Yuna {
   private async runMiddlewares(ctx: Context, finalHandler: () => Promise<void>): Promise<void> {
     let index = 0;
     const next = async (): Promise<void> => {
-      if (ctx.whispered) return;
+      if (ctx.res.writableEnded) return;
       if (index < this.middlewares.length) {
         try {
           const middleware = this.middlewares[index++];
           await middleware(ctx, next);
         } catch (err) {
           console.error("Middleware Error:", err);
-          if (!ctx.whispered) {
-            ctx.whisper!("Internal Server Error", { statusCode: 500 });
+          if (!ctx.res.writableEnded) {
+            ctx.status(500).messageBack("Internal Server Error");
           }
         }
       } else {
@@ -201,8 +161,12 @@ export default class Yuna {
   private async handleRoute(ctx: Context): Promise<void> {
     const method = ctx.req.method || '';
     const url = ctx.req.url || '';
+
+    const normalizedUrl = url.startsWith("/") ? ctx.url.slice(1) : url;
+
     // Use the Radix Tree to match the route and extract parameters.
-    const { handler, params } = this.routes.match(method, url);
+    const { handler, params } = this.routes.match(method, normalizedUrl);
+    console.log("handleRoute - match result:", { handler, params });
     if (handler) {
       ctx.params = params;
       await handler(ctx);
