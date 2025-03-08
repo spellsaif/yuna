@@ -34,25 +34,31 @@ import { RouteHandler } from "../types";
         node.handlers[method] = handler;
     }
 
-    match(method: string, path: string): {handler?: RouteHandler, params: Record<string, string>} {
+    match(method: string, path: string): { handler?: RouteHandler, params: Record<string, string> } {
         let node = this.root;
         const params: Record<string, string> = {};
-        const parts = path.split("/").filter(Boolean);
-
+        const parts = path.split('/').filter(Boolean);
+    
         for (const part of parts) {
-            if(node.children.has(part)) {
+            if (node.children.has(part)) {
                 node = node.children.get(part)!;
-
-            }else if (node.children.has(":")) {
-                const paramNode = node.children.get(':')!;
-                params[paramNode.paramKey!] = part; // Assign parameter correctly
-                node = paramNode;
-
             } else {
-                return {handler: undefined, params: {}};
+                // Match dynamic segment (":name")
+                let dynamicNode: RadixTreeNode | undefined;
+                for (const [key, child] of node.children.entries()) {
+                    if (key.startsWith(":")) {  // Dynamic param found
+                        dynamicNode = child;
+                        const paramKey = key.slice(1); // Remove `:` to get "name"
+                        params[paramKey] = part; // Store correctly as { name: 'saif' }
+                        break;
+                    }
+                }
+                if (!dynamicNode) return { handler: undefined, params: {} };
+                node = dynamicNode;
             }
         }
-
-        return {handler: node.handlers[method], params};
+    
+        return { handler: node.handlers[method], params }; // Ensure correct params
     }
+    
  }
